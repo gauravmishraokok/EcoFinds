@@ -5,8 +5,9 @@ import { productService } from '../services/productService';
 import { validationRules, validateForm } from '../utils/validators';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
+import ImageUpload from '../components/ui/ImageUpload';
 import ProtectedRoute from '../components/common/ProtectedRoute';
-import { ArrowLeft, Upload, X } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const AddProduct = () => {
@@ -23,6 +24,7 @@ const AddProduct = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     loadCategories();
@@ -70,15 +72,24 @@ const AddProduct = () => {
 
     setIsLoading(true);
     try {
-      await productService.createProduct({
+      const productData = {
         ...formData,
-        price: parseFloat(formData.price)
-      });
+        price: parseFloat(formData.price),
+        images: images.length > 0 ? images : ['/placeholder-image.png']
+      };
+      
+      console.log('=== DEBUGGING IMAGE UPLOAD ===');
+      console.log('Raw images array:', images);
+      console.log('Processed images:', productData.images);
+      console.log('Full product data:', productData);
+      
+      await productService.createProduct(productData);
       toast.success('Product created successfully!');
       navigate('/my-listings');
     } catch (err) {
       const message = err.response?.data?.message || 'Failed to create product';
       toast.error(message);
+      console.error('Error creating product:', err);
     } finally {
       setIsLoading(false);
     }
@@ -219,22 +230,19 @@ const AddProduct = () => {
                 </select>
               </div>
 
-              {/* Image Upload Placeholder */}
+              {/* Image Upload */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Product Images
                 </label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                  <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                  <p className="text-gray-600 mb-2">Upload product images</p>
-                  <p className="text-sm text-gray-500">PNG, JPG up to 10MB each</p>
-                  <Button type="button" variant="outline" className="mt-4">
-                    Choose Files
-                  </Button>
-                </div>
+                <ImageUpload
+                  images={images}
+                  onImagesChange={setImages}
+                  maxImages={5}
+                  maxSizeMB={10}
+                />
                 <p className="mt-2 text-sm text-gray-500">
-                  Note: Image upload functionality will be implemented in a future update. 
-                  A placeholder image will be used for now.
+                  Upload up to 5 images. The first image will be used as the main product image.
                 </p>
               </div>
 

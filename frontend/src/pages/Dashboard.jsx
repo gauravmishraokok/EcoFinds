@@ -10,7 +10,6 @@ import {
   Package, 
   ShoppingBag, 
   TrendingUp, 
-  Edit, 
   Plus,
   Eye,
   DollarSign
@@ -266,7 +265,7 @@ const Dashboard = () => {
           {/* Quick Actions */}
           <div className="mt-8 bg-white rounded-lg shadow-sm border p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <Link to="/add-product">
                 <Button className="w-full">
                   <Plus className="h-4 w-4 mr-2" />
@@ -285,10 +284,6 @@ const Dashboard = () => {
                   View Purchases
                 </Button>
               </Link>
-              <Button variant="outline" className="w-full">
-                <Edit className="h-4 w-4 mr-2" />
-                Edit Profile
-              </Button>
             </div>
           </div>
         </div>

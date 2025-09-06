@@ -4,6 +4,8 @@ import { useAuth } from '../../hooks/useAuth';
 import { useCart } from '../../hooks/useCart';
 import { ShoppingCart, Eye } from 'lucide-react';
 import Button from '../ui/Button';
+import ImageGallery from '../ui/ImageGallery';
+import Avatar from '../ui/Avatar';
 
 const ProductCard = ({ product }) => {
   const { isAuthenticated } = useAuth();
@@ -43,13 +45,11 @@ const ProductCard = ({ product }) => {
   return (
     <div className="card hover:shadow-lg transition-shadow duration-200">
       <Link to={`/products/${product._id}`} className="block">
-        <div className="aspect-w-16 aspect-h-12 bg-gray-200 rounded-t-lg overflow-hidden">
-          <img
-            src={product.images?.[0] || '/placeholder-image.svg'}
-            alt={product.title}
-            className="w-full h-48 object-cover hover:scale-105 transition-transform duration-200"
-          />
-        </div>
+        <ImageGallery
+          images={product.images || ['/placeholder-image.svg']}
+          alt={product.title}
+          className="h-48 rounded-t-lg"
+        />
       </Link>
       
       <div className="card-content">
@@ -96,10 +96,9 @@ const ProductCard = ({ product }) => {
         {product.seller && (
           <div className="mt-3 pt-3 border-t border-gray-200">
             <div className="flex items-center space-x-2">
-              <img
-                src={product.seller.profileImage || '/placeholder-image.svg'}
-                alt={product.seller.username}
-                className="w-6 h-6 rounded-full object-cover"
+              <Avatar 
+                name={product.seller.username}
+                size="xs"
               />
               <span className="text-sm text-gray-600">
                 by {product.seller.username}

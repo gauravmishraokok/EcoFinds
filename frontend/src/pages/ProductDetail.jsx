@@ -4,6 +4,8 @@ import { useAuth } from '../hooks/useAuth';
 import { useCart } from '../hooks/useCart';
 import { productService } from '../services/productService';
 import Button from '../components/ui/Button';
+import ImageGallery from '../components/ui/ImageGallery';
+import Avatar from '../components/ui/Avatar';
 import { ArrowLeft, ShoppingCart, Heart, Share2, User, MapPin } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -16,7 +18,6 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   useEffect(() => {
     loadProduct();
@@ -111,34 +112,12 @@ const ProductDetail = () => {
         <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
             {/* Product Images */}
-            <div className="space-y-4">
-              <div className="aspect-w-16 aspect-h-12 bg-gray-200 rounded-lg overflow-hidden">
-                <img
-                  src={product.images?.[selectedImageIndex] || '/placeholder-image.svg'}
-                  alt={product.title}
-                  className="w-full h-96 object-cover"
-                />
-              </div>
-              
-              {product.images && product.images.length > 1 && (
-                <div className="grid grid-cols-4 gap-2">
-                  {product.images.map((image, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedImageIndex(index)}
-                      className={`aspect-w-16 aspect-h-12 bg-gray-200 rounded-lg overflow-hidden border-2 ${
-                        selectedImageIndex === index ? 'border-primary-500' : 'border-transparent'
-                      }`}
-                    >
-                      <img
-                        src={image}
-                        alt={`${product.title} ${index + 1}`}
-                        className="w-full h-20 object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
-              )}
+            <div>
+              <ImageGallery
+                images={product.images || ['/placeholder-image.svg']}
+                alt={product.title}
+                className="h-96"
+              />
             </div>
 
             {/* Product Info */}
@@ -172,10 +151,9 @@ const ProductDetail = () => {
               <div className="border-t pt-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Seller Information</h3>
                 <div className="flex items-center space-x-4">
-                  <img
-                    src={product.seller.profileImage || '/placeholder-image.svg'}
-                    alt={product.seller.username}
-                    className="w-12 h-12 rounded-full object-cover"
+                  <Avatar 
+                    name={product.seller.username}
+                    size="lg"
                   />
                   <div>
                     <h4 className="font-medium text-gray-900">{product.seller.username}</h4>
