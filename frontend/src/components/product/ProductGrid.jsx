@@ -1,5 +1,6 @@
 import React from 'react';
 import ProductCard from './ProductCard';
+import ProductList from './ProductList';
 
 const ProductGrid = ({ products, isLoading, error, title, subtitle }) => {
   return (
