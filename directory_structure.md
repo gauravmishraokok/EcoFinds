@@ -1,5 +1,4 @@
-#Ecofinds
-
+```bash
 EcoFinds/
 ├── .gitignore
 ├── .env.example
