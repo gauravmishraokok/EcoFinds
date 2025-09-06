@@ -1,0 +1,19 @@
+{
+  "name": "ecofinds",
+  "version": "1.0.0",
+  "description": "EcoFinds - A sustainable marketplace for buying and selling eco-friendly products",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "test": "cd backend && npm test && cd ../frontend && npm test"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": ["marketplace", "eco-friendly", "sustainable", "react", "nodejs"],
+  "author": "",
+  "license": "MIT"
+}

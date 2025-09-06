@@ -1,9 +1,5 @@
 # EcoFinds — Requirements & Wireframes
 
-> Ready-to-paste markdown for `docs/FEATURES_AND_WIREFRAMES.md`
-
----
-
 ## Features / Deliverables ✅
 
 - [ ] **User Authentication**  
