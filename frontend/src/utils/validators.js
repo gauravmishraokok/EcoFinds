@@ -4,55 +4,58 @@ export const validateEmail = (email) => {
   return emailRegex.test(email);
 };
 
-// Password validation
+// Password validation (min 6 chars, at least one letter and one number)
 export const validatePassword = (password) => {
-  return password.length >= 6;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+  return passwordRegex.test(password);
 };
 
-// Username validation
+// Username validation (3-30 chars, alphanumeric and underscores only)
 export const validateUsername = (username) => {
-  return username.length >= 3 && username.length <= 30;
+  const usernameRegex = /^[a-zA-Z0-9_]{3,30}$/;
+  return usernameRegex.test(username);
 };
 
-// Price validation
+// Price validation (positive number, max 2 decimals)
 export const validatePrice = (price) => {
   const numPrice = parseFloat(price);
-  return !isNaN(numPrice) && numPrice >= 0;
+  const priceRegex = /^\d+(\.\d{1,2})?$/;
+  return !isNaN(numPrice) && numPrice >= 0 && priceRegex.test(price);
 };
 
 // Form validation helpers
 export const validateForm = (data, rules) => {
   const errors = {};
 
-  Object.keys(rules).forEach(field => {
+  for (const field in rules) {
     const value = data[field];
     const rule = rules[field];
 
-    if (rule.required && (!value || value.trim() === '')) {
+    if (rule.required && (!value || value.toString().trim() === '')) {
       errors[field] = `${rule.label || field} is required`;
-      return;
+      continue;
     }
 
     if (value && rule.minLength && value.length < rule.minLength) {
       errors[field] = `${rule.label || field} must be at least ${rule.minLength} characters`;
-      return;
+      continue;
     }
 
     if (value && rule.maxLength && value.length > rule.maxLength) {
       errors[field] = `${rule.label || field} cannot exceed ${rule.maxLength} characters`;
-      return;
+      continue;
     }
 
     if (value && rule.pattern && !rule.pattern.test(value)) {
       errors[field] = rule.message || `${rule.label || field} format is invalid`;
-      return;
+      continue;
     }
 
     if (value && rule.custom && !rule.custom(value)) {
       errors[field] = rule.message || `${rule.label || field} is invalid`;
-      return;
+      continue;
     }
-  });
+  }
 
   return {
     isValid: Object.keys(errors).length === 0,
@@ -71,13 +74,16 @@ export const validationRules = {
   password: {
     required: true,
     minLength: 6,
-    message: 'Password must be at least 6 characters',
+    pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+    message: 'Password must be at least 6 characters and contain a letter and a number',
     label: 'Password'
   },
   username: {
     required: true,
     minLength: 3,
     maxLength: 30,
+    pattern: /^[a-zA-Z0-9_]{3,30}$/,
+    message: 'Username must be 3-30 characters and contain only letters, numbers, or underscores',
     label: 'Username'
   },
   title: {
@@ -93,7 +99,7 @@ export const validationRules = {
   price: {
     required: true,
     custom: validatePrice,
-    message: 'Price must be a valid positive number',
+    message: 'Price must be a valid positive number (max 2 decimals)',
     label: 'Price'
   }
 };
