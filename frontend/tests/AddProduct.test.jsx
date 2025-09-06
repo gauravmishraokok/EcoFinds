@@ -35,6 +35,6 @@ describe('AddProduct Component', () => {
     renderWithRouter(<AddProduct />);
     expect(screen.getByLabelText('Product Title *')).toBeInTheDocument();
     expect(screen.getByLabelText('Description *')).toBeInTheDocument();
-    expect(screen.getByLabelText('Price (USD) *')).toBeInTheDocument();
+    expect(screen.getByLabelText('Price (INR) *')).toBeInTheDocument();
   });
 });

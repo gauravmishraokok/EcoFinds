@@ -14,7 +14,7 @@ const Cart = () => {
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'INR'
     }).format(price);
   };
 
@@ -205,7 +205,7 @@ const Cart = () => {
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Tax</span>
-                      <span className="font-medium">$0.00</span>
+                      <span className="font-medium">₹0.00</span>
                     </div>
                     <div className="border-t border-gray-200 pt-3">
                       <div className="flex justify-between">
