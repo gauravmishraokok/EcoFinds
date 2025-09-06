@@ -17,3 +17,4 @@ const ProductGrid = ({ products, isLoading, error, title, subtitle }) => {
   );
 };
 
+export default ProductGrid;
