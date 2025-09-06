@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useCart } from '../../hooks/useCart';
 import { Search, ShoppingCart, User, Menu, X, LogOut } from 'lucide-react';
 import Button from '../ui/Button';
+import Logo from '../ui/Logo';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,12 +28,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-sm border-b">
+    <nav className="bg-warm-white shadow-lg border-b border-soft-gray glass">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <img src="/logo.svg" alt="EcoFinds" className="h-8" />
+          <Link to="/" className="flex items-center gap-3">
+            <Logo size="md" />
+            <span className="text-2xl font-display font-bold text-charcoal">EcoFinds</span>
           </Link>
 
           {/* Search Bar - Desktop */}

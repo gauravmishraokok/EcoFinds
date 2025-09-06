@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
-const ImageGallery = ({ images, alt = 'Product', className = '' }) => {
+const ImageGallery = ({ images, alt = 'Product', className = '', showThumbnails = true }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -70,7 +70,7 @@ const ImageGallery = ({ images, alt = 'Product', className = '' }) => {
         </div>
 
         {/* Thumbnail Navigation */}
-        {images.length > 1 && (
+        {showThumbnails && images.length > 1 && (
           <div className="flex space-x-2 mt-3 overflow-x-auto">
                 {images.map((image, index) => (
                   <button

@@ -49,6 +49,7 @@ const ProductCard = ({ product }) => {
           images={product.images || ['/placeholder-image.svg']}
           alt={product.title}
           className="h-48 rounded-t-lg"
+          showThumbnails={false}
         />
       </Link>
       

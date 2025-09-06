@@ -3,7 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import { productService } from '../services/productService';
 import ProductGrid from '../components/product/ProductGrid';
 import Button from '../components/ui/Button';
-import { Filter, SortAsc } from 'lucide-react';
+import Logo from '../components/ui/Logo';
+import { Filter, SortAsc, Leaf, Recycle, Heart, Sparkles } from 'lucide-react';
 
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -81,37 +82,73 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-earth">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-primary-600 to-primary-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-              Welcome to EcoFinds
-            </h1>
-            <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-              Discover and sell sustainable, eco-friendly products. Join our community 
-              of environmentally conscious buyers and sellers.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary">
-                Browse Products
-              </Button>
-              <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-primary-600">
-                Start Selling
-              </Button>
+      <div className="relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 leaf-pattern opacity-20"></div>
+        <div className="absolute top-10 left-10 w-32 h-32 bg-sage-200 rounded-full opacity-30 animate-float"></div>
+        <div className="absolute top-20 right-20 w-24 h-24 bg-terracotta-200 rounded-full opacity-40 animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-10 left-1/4 w-16 h-16 bg-moss-200 rounded-full opacity-50 animate-float" style={{animationDelay: '4s'}}></div>
+        
+        <div className="relative bg-gradient-sage">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div className="text-center">
+              {/* Logo */}
+              <div className="flex justify-center mb-8">
+                <Logo size="xl" className="animate-pulse-slow" />
+              </div>
+              
+              <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-6">
+                EcoFinds
+              </h1>
+              <p className="text-xl md:text-2xl text-sage-100 mb-8 max-w-3xl mx-auto leading-relaxed">
+                Discover and sell sustainable, eco-friendly products. Join our community 
+                of environmentally conscious buyers and sellers making a difference.
+              </p>
+              
+              {/* Feature highlights */}
+              <div className="flex flex-wrap justify-center gap-6 mb-10">
+                <div className="flex items-center gap-2 text-sage-100">
+                  <Leaf className="w-5 h-5" />
+                  <span className="text-sm font-medium">100% Sustainable</span>
+                </div>
+                <div className="flex items-center gap-2 text-sage-100">
+                  <Recycle className="w-5 h-5" />
+                  <span className="text-sm font-medium">Circular Economy</span>
+                </div>
+                <div className="flex items-center gap-2 text-sage-100">
+                  <Heart className="w-5 h-5" />
+                  <span className="text-sm font-medium">Community Driven</span>
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" variant="secondary" className="shadow-xl">
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Browse Products
+                </Button>
+                <Button size="lg" variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-sage-600 shadow-xl">
+                  Start Selling
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Filters Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
-          <div className="flex flex-col lg:flex-row gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="card glass p-8 mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <Filter className="w-6 h-6 text-sage-600" />
+            <h2 className="text-2xl font-display font-semibold text-charcoal">Discover Products</h2>
+          </div>
+          
+          <div className="flex flex-col lg:flex-row gap-6">
             {/* Search */}
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-charcoal mb-3">
                 Search Products
               </label>
               <input
@@ -119,19 +156,19 @@ const Home = () => {
                 placeholder="Search by title or description..."
                 value={filters.search}
                 onChange={(e) => handleFilterChange('search', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="input"
               />
             </div>
 
             {/* Category Filter */}
             <div className="lg:w-48">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-charcoal mb-3">
                 Category
               </label>
               <select
                 value={filters.category}
                 onChange={(e) => handleFilterChange('category', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="input"
               >
                 <option value="">All Categories</option>
                 {categories.map((category) => (
@@ -144,7 +181,7 @@ const Home = () => {
 
             {/* Sort */}
             <div className="lg:w-48">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-charcoal mb-3">
                 Sort By
               </label>
               <select
@@ -154,7 +191,7 @@ const Home = () => {
                   handleFilterChange('sort', sort);
                   handleFilterChange('order', order);
                 }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="input"
               >
                 <option value="createdAt-desc">Newest First</option>
                 <option value="createdAt-asc">Oldest First</option>

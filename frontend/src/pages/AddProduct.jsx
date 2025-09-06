@@ -78,11 +78,6 @@ const AddProduct = () => {
         images: images.length > 0 ? images : ['/placeholder-image.png']
       };
       
-      console.log('=== DEBUGGING IMAGE UPLOAD ===');
-      console.log('Raw images array:', images);
-      console.log('Processed images:', productData.images);
-      console.log('Full product data:', productData);
-      
       await productService.createProduct(productData);
       toast.success('Product created successfully!');
       navigate('/my-listings');

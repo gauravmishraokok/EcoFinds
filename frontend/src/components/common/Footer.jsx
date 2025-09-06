@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Logo from '../ui/Logo';
+import { Leaf, Heart, Recycle, Globe } from 'lucide-react';
 
 const Footer = () => {
   return (

@@ -98,11 +98,6 @@ const createProduct = async (req, res) => {
   try {
     const { title, description, price, category, condition, tags, images } = req.body;
     
-    console.log('=== BACKEND DEBUG ===');
-    console.log('Received images:', images);
-    console.log('Images type:', typeof images);
-    console.log('Images is array:', Array.isArray(images));
-
     const product = await Product.create({
       title,
       description,
@@ -113,8 +108,6 @@ const createProduct = async (req, res) => {
       tags: tags || [],
       images: images && images.length > 0 ? images : ['/placeholder-image.png']
     });
-    
-    console.log('Created product with images:', product.images);
 
     const populatedProduct = await Product.findById(product._id)
       .populate('category', 'name')

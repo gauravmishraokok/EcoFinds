@@ -44,9 +44,6 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 5, maxSizeMB = 1
         reader.onload = (e) => {
           // Store the base64 data URL directly
           const newImages = [...images, e.target.result];
-          console.log('=== IMAGE UPLOAD DEBUG ===');
-          console.log('New image data URL length:', e.target.result.length);
-          console.log('Updated images array length:', newImages.length);
           onImagesChange(newImages);
         };
         reader.readAsDataURL(file);
