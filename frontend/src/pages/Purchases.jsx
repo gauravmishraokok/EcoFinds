@@ -21,10 +21,12 @@ const Purchases = () => {
       setIsLoading(true);
       setError(null);
       const response = await purchaseService.getPurchases();
-      setPurchases(response.purchases);
+      const purchases = response?.purchases || [];
+      setPurchases(purchases);
     } catch (err) {
       setError('Failed to load purchases');
       console.error('Error loading purchases:', err);
+      setPurchases([]); // Set empty array on error
     } finally {
       setIsLoading(false);
     }
@@ -38,19 +40,24 @@ const Purchases = () => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    if (!dateString) return 'Unknown Date';
+    try {
+      return new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch (error) {
+      return 'Invalid Date';
+    }
   };
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      pending: { color: 'bg-yellow-100 text-yellow-800', text: 'Pending' },
-      completed: { color: 'bg-green-100 text-green-800', text: 'Completed' },
-      cancelled: { color: 'bg-red-100 text-red-800', text: 'Cancelled' },
-      refunded: { color: 'bg-gray-100 text-gray-800', text: 'Refunded' }
+      pending: { color: 'bg-terracotta-100 text-terracotta-800', text: 'Pending' },
+      completed: { color: 'bg-sage-100 text-sage-800', text: 'Completed' },
+      cancelled: { color: 'bg-clay-100 text-clay-800', text: 'Cancelled' },
+      refunded: { color: 'bg-stone-100 text-stone-800', text: 'Refunded' }
     };
     
     const config = statusConfig[status] || statusConfig.pending;
@@ -64,20 +71,20 @@ const Purchases = () => {
   if (isLoading) {
     return (
       <ProtectedRoute>
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gradient-earth">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="animate-pulse">
-              <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
+              <div className="h-8 bg-soft-gray rounded w-1/4 mb-6"></div>
               <div className="space-y-4">
                 {[...Array(5)].map((_, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow-sm border p-6">
+                  <div key={index} className="card p-6">
                     <div className="flex items-center space-x-4">
-                      <div className="h-20 w-20 bg-gray-200 rounded"></div>
+                      <div className="h-20 w-20 bg-soft-gray rounded"></div>
                       <div className="flex-1">
-                        <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                        <div className="h-4 bg-soft-gray rounded mb-2"></div>
+                        <div className="h-4 bg-soft-gray rounded w-3/4"></div>
                       </div>
-                      <div className="h-6 bg-gray-200 rounded w-20"></div>
+                      <div className="h-6 bg-soft-gray rounded w-20"></div>
                     </div>
                   </div>
                 ))}
@@ -91,7 +98,7 @@ const Purchases = () => {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-earth">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
@@ -103,25 +110,25 @@ const Purchases = () => {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Purchase History</h1>
-                <p className="text-gray-600 mt-1">View all your past purchases</p>
+                <h1 className="text-3xl font-display font-bold text-charcoal">Purchase History</h1>
+                <p className="text-dark-gray mt-1">View all your past purchases</p>
               </div>
             </div>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-              <p className="text-red-800">{error}</p>
+            <div className="bg-clay-50 border border-clay-200 rounded-lg p-4 mb-6">
+              <p className="text-clay-800">{error}</p>
             </div>
           )}
 
           {purchases.length === 0 ? (
             <div className="text-center py-12">
-              <div className="text-gray-400 mb-4">
+              <div className="text-medium-gray mb-4">
                 <Package className="mx-auto h-12 w-12" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No purchases yet</h3>
-              <p className="text-gray-600 mb-6">Start shopping to see your purchase history here.</p>
+              <h3 className="text-lg font-display font-medium text-charcoal mb-2">No purchases yet</h3>
+              <p className="text-dark-gray mb-6">Start shopping to see your purchase history here.</p>
               <Link to="/">
                 <Button>
                   Start Shopping
@@ -131,25 +138,25 @@ const Purchases = () => {
           ) : (
             <div className="space-y-6">
               {purchases.map((purchase) => (
-                <div key={purchase._id} className="bg-white rounded-lg shadow-sm border overflow-hidden">
+                <div key={purchase._id} className="card overflow-hidden">
                   <div className="p-6">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center space-x-4">
                         <img
-                          src={purchase.product.images?.[0] || '/placeholder-image.svg'}
-                          alt={purchase.product.title}
+                          src={purchase.product?.images?.[0] || '/placeholder-image.svg'}
+                          alt={purchase.product?.title || 'Product'}
                           className="h-20 w-20 object-cover rounded-lg"
                         />
                         <div>
-                          <Link to={`/products/${purchase.product._id}`}>
-                            <h3 className="text-lg font-semibold text-gray-900 hover:text-primary-600 transition-colors">
-                              {purchase.product.title}
+                          <Link to={`/products/${purchase.product?._id || '#'}`}>
+                            <h3 className="text-lg font-display font-semibold text-charcoal hover:text-sage-600 transition-colors">
+                              {purchase.product?.title || 'Unknown Product'}
                             </h3>
                           </Link>
-                          <div className="flex items-center space-x-4 mt-2 text-sm text-gray-600">
+                          <div className="flex items-center space-x-4 mt-2 text-sm text-dark-gray">
                             <div className="flex items-center">
                               <User className="h-4 w-4 mr-1" />
-                              {purchase.seller.username}
+                              {purchase.seller?.username || 'Unknown Seller'}
                             </div>
                             <div className="flex items-center">
                               <Calendar className="h-4 w-4 mr-1" />
@@ -160,29 +167,29 @@ const Purchases = () => {
                       </div>
                       <div className="text-right">
                         {getStatusBadge(purchase.status)}
-                        <p className="text-lg font-semibold text-gray-900 mt-2">
+                        <p className="text-lg font-display font-semibold text-charcoal mt-2">
                           {formatPrice(purchase.totalPrice)}
                         </p>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-dark-gray">
                           Qty: {purchase.quantity}
                         </p>
                       </div>
                     </div>
                     
                     {purchase.notes && (
-                      <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                        <p className="text-sm text-gray-700">
+                      <div className="mt-4 p-3 bg-sage-50 rounded-lg">
+                        <p className="text-sm text-sage-700">
                           <span className="font-medium">Notes:</span> {purchase.notes}
                         </p>
                       </div>
                     )}
                     
-                    <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center">
-                      <div className="text-sm text-gray-600">
+                    <div className="mt-4 pt-4 border-t border-soft-gray flex justify-between items-center">
+                      <div className="text-sm text-dark-gray">
                         Order ID: {purchase._id.slice(-8).toUpperCase()}
                       </div>
                       <div className="flex space-x-2">
-                        <Link to={`/products/${purchase.product._id}`}>
+                        <Link to={`/products/${purchase.product?._id || '#'}`}>
                           <Button variant="outline" size="sm">
                             View Product
                           </Button>
