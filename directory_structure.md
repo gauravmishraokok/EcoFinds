@@ -1,3 +1,5 @@
+#Ecofinds
+
 EcoFinds/
 ├── .gitignore
 ├── .env.example
